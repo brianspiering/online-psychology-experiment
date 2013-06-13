@@ -1,0 +1,113 @@
+#container{
+    position: absolute;
+    left: 15%;
+    top: 10%;		
+    width:  650px; 		/*fixed*/
+    height: 500px;		/*fixed*/
+    text-align: center; 
+    font-family: Arial; 
+    border-radius: 10px; 
+    border: solid black 2px; 
+    font-size: 17pt; 
+    background-color: silver;
+    padding: 10px;
+}
+.nextScreen{
+    text-align: center;
+    position: absolute;
+    bottom: 2%;
+    left: 25%;
+    width: 50%;
+}
+#text_header{
+    position: absolute;
+    width: 100%;
+    text-align: center; 
+    top: 0px;
+    color: maroon;
+    font-size: 24pt; 
+    padding-top: 0px;
+}
+#text_mainmessage{
+    position: absolute;
+    width: 95%;
+    text-align: left; 
+    top: 40px;
+}
+#text_footermessage{
+    position: absolute;
+    width: 95%;
+    bottom: 40px;
+    color:red;
+}
+#button_nextscreen{
+    text-align: center;
+    position: absolute;
+    bottom: 10%;
+    left: 25%;
+    width: 50%;
+}
+
+div#image{
+    display: none
+}
+
+#imagelocationtraining_center{
+    text-align: center;
+    position: absolute;
+    top: 100px; /*Hardcoded*/
+    left: 0px;
+    width: 100%;
+}
+#imagelocationtransfer_top{
+    text-align: center;
+    position: absolute;
+    top: -30px; /*-85px; /*Hardcoded*/
+    left: 0px;
+    width: 100%;
+}
+#imagelocationtransfer_bottom{
+    text-align: center;
+    position: absolute;
+    top: 200px; /*Hardcoded*/
+    left: 0px;
+    width: 100%;
+}
+#imagelocationtransfer_left{
+    text-align: center;
+    position: absolute;
+    top: 70px; /*Hardcoded*/
+    left: -190px;
+    width: 100%;
+}
+#imagelocationtransfer_right{
+    text-align: center;
+    position: absolute;
+    top: 70px; /*Hardcoded*/
+    left: 190px;
+    width: 100%;
+}
+#feedbacklocation{
+    text-align: center;
+    position: absolute;
+    top: 200px; /*Hardcoded*/
+    left: 0px;
+    width: 100%;
+    font-size: 99pt;
+}
+#responselocation_left{
+    position: absolute;
+    top: 450px;
+    left: 250px;
+    font-size: 36pt; 
+}
+#responselocation_right{
+    position: absolute;
+    top: 450px;
+    left: 400px;
+    font-size: 36pt; 
+}
+a{
+    color:blue;
+    cursor: pointer;
+}

@@ -1,0 +1,20 @@
+{
+	"inputTrials": [
+		{
+			"trialNumber": 1,
+			"numberofStimuli": 4,
+			"firstStimuli": 1,
+			"secondStimuli": 2,
+			"thirdStimuli": 3,
+			"fourthStimuli": 4
+		},
+		{
+			"trialNumber": 1,
+			"numberofStimuli": 4,
+			"firstStimuli": 12,
+			"secondStimuli": 11,
+			"thirdStimuli": 10,
+			"fourthStimuli": 9
+		},
+	]
+}

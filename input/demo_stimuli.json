@@ -1,0 +1,29 @@
+{"inputTrials":
+    [
+        {
+            "trialNumber":1,
+            "imageNumber":1,
+            "correctResponse": "a"
+        },
+        {
+            "trialNumber":2,
+            "imageNumber":2,
+            "correctResponse": "b"
+        },
+        {
+            "trialNumber":3,
+            "imageNumber":3,
+            "correctResponse": "b"
+        },
+        {
+            "trialNumber":4,
+            "imageNumber":4,
+            "correctResponse": "a"
+        },
+        {
+            "trialNumber":5,
+            "imageNumber":5,
+            "correctResponse": "b"
+        }
+    ]
+}

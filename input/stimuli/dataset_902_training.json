@@ -1,0 +1,14 @@
+{
+	"inputTrials": [
+		{
+			"trialNumber": 1,
+			"imageNumber": 5,
+			"correctResponse": "a"
+		},
+		{
+			"trialNumber": 2,
+			"imageNumber": 12,
+			"correctResponse": "b"
+		},
+	]
+}

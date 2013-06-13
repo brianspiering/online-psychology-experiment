@@ -1,0 +1,36 @@
+{
+	"inputTrials": [
+		{
+			"trialNumber": 1,
+			"numberofStimuli": 4,
+			"firstStimuli": 1,
+			"secondStimuli": 2,
+			"thirdStimuli": 3,
+			"fourthStimuli": 4
+		},
+		{
+			"trialNumber": 2,
+			"numberofStimuli": 4,
+			"firstStimuli": 12,
+			"secondStimuli": 11,
+			"thirdStimuli": 10,
+			"fourthStimuli": 9
+		},
+		{
+			"trialNumber": 3,
+			"numberofStimuli": 4,
+			"firstStimuli": 7,
+			"secondStimuli": 8,
+			"thirdStimuli": 11,
+			"fourthStimuli": 12
+		},
+		{
+			"trialNumber": 4,
+			"numberofStimuli": 4,
+			"firstStimuli": 3,
+			"secondStimuli": 1,
+			"thirdStimuli": 6,
+			"fourthStimuli": 7
+		},
+	]
+}
