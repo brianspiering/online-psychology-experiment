@@ -2,55 +2,55 @@
 var debugFlag = 1 //0 = final version; 1 = debug mode
 if(debugFlag == 0){
     var stopDemoTrialIndex = 5;
-    var currentDataSet = 999;
+    var currentDataSet = 999; //Math.floor(Math.random() * (499 - 401 + 1)) + 401;
 } else if(debugFlag == 1){
     var stopDemoTrialIndex = 2;
-    var currentDataSet = 999; 
-    // Data set for testing. Each one has different number of trials
-    // 901 = 1 training, 1 transfer 
+    var currentDataSet = 999;
+    // Data set for testing. Each one has different number of trials.
+    // 901 = 1 training, 1 transfer
     // 902 = 2 training, 2 transfer
     // 999 = 4 training, 4 transfer
 };
 
-//initial values. Needed to load the 2nd page of the description after the page loads.
+// Define initial values.
 var opt={
     "type":"message",
     "value":"screenConsent"
 };
 
-//the JSON data
+// Define JSON data parameters.
 var JSONFile = {};
-var imageSizeRescaled = 350; 	// the size of the image
-var nImages = 12;       //the number of alien images; total number possible
+var imageSizeRescaled = 350; 	  // the size of the image
+var nImages = 12;                    //the number of alien images; total number possible
 
-//the list of images
-var Images=new Array(nImages);// the Images list
+// Create the list of images.
+var Images=new Array(nImages); // the Images list
 
-// the error class;
+// Define the Error class.
 var Errors={
     AJAX_ERROR_MESSAGE:"Server connection error!"
 };
 
-//the Demo class
+// Define the Demo class.
 var Demo=new Array(stopDemoTrialIndex);
 
-//the Training class
+// Define the Training class.
 var Training={
     dataset:currentDataSet,
     dataArray:new Array(),
-    timeFeeback:750// in milliseconds - 750 is final value
+    timeFeeback:750 // in milliseconds. Final value =750.
 };
 
-//the Transfer class
+// Define the Transfer class.
 var Transfer={
     dataset:currentDataSet,
     dataArray:new Array(),
-    timeStimulusLatency:200 // in milliseconds - 200 is final value
+    timeStimulusLatency:200 // in milliseconds. Final value = 200.
 };
 
-//the Data class
+// Define the Data class.
 var Data={
-    userID:Math.floor(Math.random()*89999+10000), //Random 5 digit number
+    userID:Math.floor(Math.random()*89999+10000), // Random 5 digit number
     type:'demo',
     crtIndex:0,
     filename:"",
@@ -59,21 +59,21 @@ var Data={
 //----------------------------------------------------
 
 //--- Functions --------------------------------------
-(function($) {// prints in the console during debugging
+(function($) { // Prints in the console during debugging.
     $.message = function(text) {
         if(debugFlag == 1){
-            console.log(text); 
+            console.log(text);
         }
     };
 })(jQuery);
 
-(function($) {//alerts an error
+(function($) { // Alerts an error.
     $.Error = function(text) {
         alert(text);
     };
 })(jQuery);
 
-(function($) {//writes a text into the footer of the container
+(function($) { // Writes a text into the footer of the container.
     $.footerWrite= function(text) {
         $("#text_footermessage").show();
         $("#text_footermessage").text(text);
@@ -83,7 +83,7 @@ var Data={
     };
 })(jQuery);
 
-(function($){ //We load the next data
+(function($){ // Load the next data.
     $.loadData=function(opt){
         $.ajax({
             url:'response.php',
@@ -91,8 +91,8 @@ var Data={
             data: opt,
             success: function(data) {
                 data=eval('('+data+')');
-                $("div#response").html(data.div);//we store the next description in the response div
-                $("a#nextScreen, a#nextImage").attr("next",data.nextData);//we store the next link to the next description into the "next" attribute
+                $("div#response").html(data.div); //Store the next description in the response div.
+                $("a#nextScreen, a#nextImage").attr("next",data.nextData); //Store the next link to the next description into the "next" attribute.
             },
             error: function() {
                 alert('The website failed to load. Please return the hit');
@@ -103,8 +103,8 @@ var Data={
     }
 })(jQuery);
 
-(function($){ // retrieves a JSON file
-    //We load the desired json
+(function($){ // Retrieve a JSON file.
+    // Load the desired JSON file.
     $.loadJSON=function(opt){
         $.ajax({
             url:'response.php',
@@ -123,7 +123,7 @@ var Data={
     }
 })(jQuery);
 
-(function($){ //Saves a file
+(function($){ // Save a file.
     $.footerWrite("Saving data...");
     $.saveFile=function(opt){
         $.ajax({
@@ -131,7 +131,7 @@ var Data={
             type:"post",
             data: opt,
             success: function(data) {
-                $.footerWrite(data);//we append the response to the footer
+                $.footerWrite(data); // Append the response to the footer.
             },
             error: function() {
                 alert('The website failed to load. Please return the hit');
@@ -143,46 +143,46 @@ var Data={
 })(jQuery);
 //---------------------------------------------------------
 
-//the main function
+// The main function.
 $(document).ready(function(){
-    $.loadData(opt);//we load the second description page
-    $("a#nextScreen").live("click",function(){//loads the next description page
-        
-        $("div#description").html($("div#response").html());//we update the information the client sees
-        
-        $(this).attr("current",$(this).attr("next"));//we update the next information the client should request from the server
-        
-        reset("div#description");//we reset the description div
+    $.loadData(opt); // Load the second description page.
+    $("a#nextScreen").live("click",function(){ // Load the next description page.
+
+        $("div#description").html($("div#response").html()); // Update the information the client sees.
+
+        $(this).attr("current",$(this).attr("next")); // Update the next information the client should request from the server.
+
+        reset("div#description"); // Reset the description div.
         opt={
             "type":"message",
             "value": $(this).attr("current")
         }
         switch(opt.value){
-            // we reach the Training part.
+            // Start of Training part.
             case "screenTraining":{
-                $(this).attr("id","nextImage");//we change the id of the button from 'nextScreen' to 'nextImage'
-         
+                $(this).attr("id","nextImage"); // Change the id of the button from 'nextScreen' to 'nextImage'.
+
                 $.loadData(opt);
                 opt={
                     "type":"json",
                     "value":"demo_stimuli"
                 };
-                $.loadJSON(opt)//we load the demo values before they are neede
-                if(Images[0]==undefined){//we test to see if the images are loaded or not
-                    preloadImages();//we load the alien images
+                $.loadJSON(opt) // Load the demo values before they are needed.
+                if(Images[0]==undefined){ // Test to see if the images are loaded or not.
+                    preloadImages(); // Load images.
                 }
-                loadImages();//start showing the images
+                loadImages(); // Start showing  images.
                 break;
             }
-            // we reach the Training part.
+            // Start the Training part.
             case "screenTransfer":{
-                $(this).attr("id","nextImage");//we change the id of the button from 'nextScreen' to 'nextImage'
-                $.loadData(opt);//loads the next description
-                loadImages();//start showing the images
+                $(this).attr("id","nextImage"); // Change the id of the button from 'nextScreen' to 'nextImage'.
+                $.loadData(opt); // Loads the next description.
+                loadImages(); // Start showing the images.
                 break;
             }
             default:{
-                //loads the next description
+                // Loads the next description.
                 $.loadData(opt);
                 break;
             }
@@ -190,14 +190,14 @@ $(document).ready(function(){
     });
 });
 
-//This generates the Demo, Training, Transfer classes
-// and starts each part depending on the Data.type
+// Generate the Demo, Training, Transfer classes.
+// Then start each part depending on the Data.type.
 function loadImages(){
     $("a#nextImage").on("click", function(){
         switch(Data.type){
             case "demo":{
                 generateDemo();
-                loadDemo();//we show the demo
+                loadDemo(); // Show the demo.
                 break;
             }
             case "training":{
@@ -214,20 +214,20 @@ function loadImages(){
     });
 }
 
-//shows an image in the middle of the screen
+// Show an image in the middle of the screen.
 function showImage(Image){
-    setupImage();//we hide the other information
+    setupImage(); // Hide the other information.
     $('#currentimage_center').attr('src', Image.image.src);
     $('#currentimage_center').load(function() {
-        $('#currentimage_center').height(imageSizeRescaled); //REFACTOR: to be a class for image
-        $('#currentimage_center').width(imageSizeRescaled); 
+        $('#currentimage_center').height(imageSizeRescaled); //TODO: change to be a css class for image
+        $('#currentimage_center').width(imageSizeRescaled);
         $('#currentimage_center').show();
         showResponseCues()
-    }); // wait for current image is loaded before displaying
-    
+    }); // Wait for current image is loaded before displaying.
+
 }
 
-//Puts the images during Transfer part
+// Put the images during Transfer part.
 function showImageTransfer() {
     setupImage();
     $("#imagelocationtraining_center").hide();
@@ -236,20 +236,20 @@ function showImageTransfer() {
     $('#currentimage_top').load(function() {
         showFirstImage_CuesNo();
         setTimeout(showSecondImage_CuesNo, Transfer.timeStimulusLatency);
-    }); // wait for image to load
+    }); // Wait for image to load.
 }
 
-//These functions will generate the DEMO, Training and Transfer classes
+// These functions will generate the DEMO, Training and Transfer classes.
 
-//populates the Demo object
+// Populates the Demo object.
 function generateDemo(){
     tempJson=JSONFile;
     opt={
         "type":"json",
         "value":'stimuli/dataset_'+Training.dataset+'_training'
     };
-    $.loadJSON(opt)//we load the training values
-         
+    $.loadJSON(opt) // Load the training values.
+
     for(i=0;i<Demo.length;i++){
         Demo[i]={
             image:Images[tempJson[i].imageNumber-1].image,
@@ -263,15 +263,15 @@ function generateDemo(){
     $.message(Demo);
 }
 
-//populates the Training object
+//  Populate the Training object.
 function generateTraining(){
     tempJson=JSONFile;
     opt={
         "type":"json",
         "value":'stimuli/dataset_'+Transfer.dataset+'_transfer'
     };
-    $.loadJSON(opt)//we load the transfer values
-         
+    $.loadJSON(opt) // Load the transfer values.
+
     for(i=0;i<tempJson.length;i++){
         Training.dataArray[i]={
             image:Images[tempJson[i].imageNumber-1].image,
@@ -284,16 +284,16 @@ function generateTraining(){
     }
     $.message(Training);
 }
-//populates the Transfer object
+// Populate the Transfer object.
 function generateTransfer(){
-    
+
     for(i=0;i<JSONFile.length;i++){
-        var images=new Array()  ; 
+        var images=new Array()  ;
         images[0]=Images[JSONFile[i].firstStimuli-1].image;
         images[1]=Images[JSONFile[i].secondStimuli-1].image;
         images[2]=Images[JSONFile[i].thirdStimuli-1].image;
         images[3]=Images[JSONFile[i].fourthStimuli-1].image;
-        
+
         Transfer.dataArray[i]={
             image:images,
             data:{
@@ -311,8 +311,8 @@ function generateTransfer(){
 
 //-----------------------------------------------------------------
 
-//loads the Demo images
-function loadDemo(){  
+// Load the Demo images.
+function loadDemo(){
     if(Data.crtIndex < Demo.length){
         showImage(Demo[Data.crtIndex]);
     }
@@ -321,7 +321,7 @@ function loadDemo(){
     }
 }
 
-//loads the Training images
+// Loads the Training images.
 function loadTraining() {
     if(Data.crtIndex < Training.dataArray.length){
         showImage(Training.dataArray[Data.crtIndex]);
@@ -330,7 +330,7 @@ function loadTraining() {
         screenTransfer();
 }
 
-//loads the Transfer images
+// Loads the Transfer images.
 function loadTransfer() {
     if(Data.crtIndex < Transfer.dataArray.length){
         showImageTransfer();
@@ -341,29 +341,28 @@ function loadTransfer() {
 
 function screenGoodbye() {
     $(document).ready(function() {
-        saveTransfer();//we save the Transfer file
+        saveTransfer(); // Save the Transfer file.
         setupScreen();
         $("div#description").html($("div#response").html());
-        
         $.footerWrite("Saving your data. Please wait...");
         $('#nextScreen, a#nextImage').hide();
         $.message('Experiment ran successfully!');
-    }); // wait for DOM to load
+    }); // Wait for DOM to load.
 }
 
+// Excute if participant didn't reach learning criteria during training.
 function screenGoodbyeWithoutTransfer(){
-    // excute if subject didn't reach learning criteria during training
-    // This function is a mess. All the elements are here but it needs to refactored.
+    // TODO: double check that it works correctly before incorperating
         $(document).ready(function() {
         setupScreen();
         $("div#description").html($("div#response").html());
         $('#nextScreen, a#nextImage').hide();
         $.message('Experiment ran successfully!');
-    }); // wait for DOM to load
+    }); // Wait for DOM to load.
     setDescriptionPage();
     saveTraining();
 
-    changeDataType('transfer');//we change from training to transfer
+    changeDataType('transfer'); // Change from training to transfer.
 }
 
 function setDescriptionPage(){
@@ -372,86 +371,85 @@ function setDescriptionPage(){
     setupScreen();
 }
 
-//we show the Training screen
+// Show the Training screen.
 function screenTraining() {
     setDescriptionPage();
-    
-    resetDataField();//we empty the data so we can put only string
+
+    resetDataField(); // Empty the data so we can put only string.
     Data.filename="Subject"+Data.userID+"_Header.txt";
     Data.data[0]="Subject ID = "+Data.userID+"\n"+
     "Data Set Number = "+currentDataSet+"\n"+
     "Start Training Trials: "+new Date()+"\n";
 
-    saveFile();//we save the Header file
-    changeDataType('training');//we change from demo to training
-    
+    saveFile(); // Save the Header file.
+    changeDataType('training'); // Change from demo to training.
+
     $("div#description").html($("div#response").html());
     reset("div#description");
- 
-} 
+}
 
-//we show the Transfer screen
+// Show the Transfer screen.
 function screenTransfer() {
     setDescriptionPage();
     saveTraining();
 
-    changeDataType('transfer');//we change from training to transfer
-    
+    changeDataType('transfer'); // Change from training to transfer.
+
     $("div#description").html($("div#response").html());
     reset("div#description");
 
-} 
+}
 
-// saves the Training data
+// Saves the Training data.
 function saveTraining(){
     setDescriptionPage();
-   
-    Data.filename='Subject'+Data.userID+'_Training.txt'; 
-    saveFile();     //we save the Training file
-    
-    //we update the header file. 
-    //The saves are async, so they are done aprox at the same time. 
-    //Chose to do this way to save memory space on the client
-    resetDataField();   //we reset the Data.data array for temporary hold of string
+
+    Data.filename='Subject'+Data.userID+'_Training.txt';
+    saveFile(); // Save the Training file.
+
+    // Update the header file.
+    // The saves are async, so they are done aprox. at the same time.
+    // Chose to do this way to save memory space on the client.
+    resetDataField();   // Reset the Data.data array for temporary hold of string.
     Data.filename="Subject"+Data.userID+"_Header.txt";
     Data.data[0]="Training Trials = Complete\n"+
     "Start Transfer Trials: "+new Date()+"\n";
     saveFile();//update the header file
-    
+
     $("#imagelocationtraining_center").hide();
     $('#nextScreen').show();
 }
 
-//saves the Transfer data
+// Saves the Transfer data.
 function saveTransfer(){
 
-    setDescriptionPage();//we 
-    //we save the Transfer file
+    setDescriptionPage();
+    // Save the Transfer file.
     Data.filename='Subject'+Data.userID+'_Transfer.txt';
-    saveFile();//save into the Transfer file the values we already have
-    
-    //We save into the the Complete file
+    saveFile(); // Save into the Transfer file the values we already have.
+
+    // Save into the the Complete file.
     resetDataField();
     Data.filename='Subject'+Data.userID+'_Complete.txt';
     Data.data[0]='Subject'+Data.userID+'  = Complete Data Set!';
     saveFile();
-    
-    //we update the header file. 
-    //The saves are async, so they are done aprox at the same time. 
-    //Chose to do this way to save memory space on the client
+
+    // Update the header file.
+    // Saves are async, so they are done aprox at the same time.
+    // Chose to do this way to save memory space on the client.
     resetDataField();
     Data.filename="Subject"+Data.userID+"_Header.txt";
     Data.data[0]="Transfer Trials = Complete\n"+
     "End of Experiment: "+new Date()+"\n";
-    saveFile();//update the header file
+    saveFile(); //Update the header file.
 }
 
-//empties the Data.data array
+// Empty the Data.data array.
 function resetDataField(){
     Data.data.length=0;
 }
 
-//changes the Data object type and resets values
+// Changes the Data object type and resets values.
 function changeDataType(Datatype){
     Data.type=Datatype;
     Data.crtIndex=0;
@@ -459,7 +457,7 @@ function changeDataType(Datatype){
     Data.filename="";
 }
 
-//loads the images from the server
+// Loads the images from the server.
 function preloadImages(){
     for (i = 0; i<nImages; i++) {
         alienImage = new Image();
@@ -471,7 +469,7 @@ function preloadImages(){
     $.message('Images have been loaded');
 }
 
-//sets the Image screen
+// Sets the Image screen.
 function setupImage() {
     $('#description').hide();
     $('a').hide();
@@ -479,7 +477,6 @@ function setupImage() {
     $("div#image").show();
     $("#image_response").removeAttr("disabled");
 }
-
 
 function showResponseCues(){
     $("#image_response").removeAttr('disabled');
@@ -519,7 +516,7 @@ function updateResponseArray(){
                 trialNumber:        Training.dataArray[Data.crtIndex].data.trialNumber,
                 imageNumber:        Training.dataArray[Data.crtIndex].data.imageNumber,
                 correctResponse:    Training.dataArray[Data.crtIndex].data.correctResponse,
-                userAnswer:         Data.data[Data.crtIndex]// the user's answer is temporary stored into this variable   
+                userAnswer:         Data.data[Data.crtIndex] // the user's answer is temporary stored into this variable
             }
             break;
         }
@@ -531,16 +528,16 @@ function updateResponseArray(){
                 secondStimuli:      Transfer.dataArray[Data.crtIndex].data.secondStimuli,
                 thirdStimuli:       Transfer.dataArray[Data.crtIndex].data.thirdStimuli,
                 fourthStimuli:      Transfer.dataArray[Data.crtIndex].data.fourthStimuli,
-                userAnswer:         Data.data[Data.crtIndex]// the user's answer is temporary stored into this variable  
+                userAnswer:         Data.data[Data.crtIndex] // the user's answer is temporary stored into this variable
             }
             break;
         }
         default:{
             break;
         }
-       
+
     }
-    hideTrialStuff();       
+    hideTrialStuff();
 }
 
 function hideTrialStuff(){
@@ -558,7 +555,7 @@ function hideTrialStuff(){
         }
     }
 }
-//The feedback shown during Training
+// The feedback shown during Training.
 function showFeedback() {
     if(Data.data[Data.crtIndex].userAnswer == Data.data[Data.crtIndex].correctResponse){
         $('#feedbacklocation').text('O');
@@ -569,7 +566,6 @@ function showFeedback() {
         $('#feedbacklocation').css('color', 'red');
     }
     setTimeout(nextTrialImage, Training.timeFeeback); // wait for feedbackTime then continue
-
 }
 
 function setupScreen() {
@@ -602,10 +598,11 @@ function nextTrialImage() {
         }
     }
 }
+
 //------FILE SAVES-------
 
-//saves the response
-function saveFile(){   
+// Saves the response.
+function saveFile(){
     opt={
         "type":"file",
         "value":{
@@ -613,41 +610,40 @@ function saveFile(){
             "data":Data.data
         }
     };
-    
     $.saveFile(opt);
 }
 
 //-------------------------------------------------------
 
-//the first image at Transfer Area
+// The first image at Transfer Area.
 function showFirstImage_CuesNo(){
     $('#currentimage_top').height(imageSizeRescaled);
-    $('#currentimage_top').width(imageSizeRescaled); 
+    $('#currentimage_top').width(imageSizeRescaled);
     $('#currentimage_top').show();
 }
-//the second image at Transfer Area
+// The second image at Transfer Area.
 function showSecondImage_CuesNo(){
     image = Transfer.dataArray[Data.crtIndex].image[1];
     $('#currentimage_right').attr('src',image.src);
     $('#currentimage_right').ready(function() {
         $('#currentimage_right').height(imageSizeRescaled);
-        $('#currentimage_right').width(imageSizeRescaled); 
+        $('#currentimage_right').width(imageSizeRescaled);
         $('#currentimage_right').show();
         setTimeout(showThirdImage_CuesNo,Transfer.timeStimulusLatency);
     });
 }
-//the third image at Transfer Area
+// The third image at Transfer Area.
 function showThirdImage_CuesNo(){
     image = Transfer.dataArray[Data.crtIndex].image[2];
     $('#currentimage_bottom').attr('src', image.src);
     $('#currentimage_bottom').ready(function() {
         $('#currentimage_bottom').height(imageSizeRescaled);
-        $('#currentimage_bottom').width(imageSizeRescaled); 
+        $('#currentimage_bottom').width(imageSizeRescaled);
         $('#currentimage_bottom').show();
         setTimeout(showFourthImage, Transfer.timeStimulusLatency);
     });
 }
-//the fourth image at Transfer Area
+// The fourth image at Transfer Area.
 function showFourthImage(){
     image = Transfer.dataArray[Data.crtIndex].image[3];
     $('#currentimage_left').attr('src', image.src);
