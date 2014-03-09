@@ -1,9 +1,7 @@
-online-psychology-experiment
+## Online psychology experiments source code 
 ============================
 
-Source code for onlinepsychologyexperiments.com/demo.
-
-Part of a remote, asynchronous, scalable psychology data collection system. Participants were recruited and compensated through Amazom.com's Mechanical Turk.
+Collects experimential psychology data online. Example of a remote, asynchronous, scalable psychology data collection system. Participants can be recruited and compensated through Amazom.com's Mechanical Turk.
 
 ## Acknowledgements
 
